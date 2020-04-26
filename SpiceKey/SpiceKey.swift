@@ -35,10 +35,10 @@ public final class SpiceKey {
         modifierKeyLongPressHandler = nil
     }
     
-    public init(_ modifierFlag: ModifierFlag,
+    public init(_ modifierFlags: ModifierFlags,
                 bothSideModifierKeysPressHandler: @escaping Handler) {
         keyCombination = nil
-        modifierFlags = modifierFlag.flags
+        self.modifierFlags = modifierFlags
         keyDownHandler = nil
         keyUpHandler = nil
         self.bothSideModifierKeysPressHandler = bothSideModifierKeysPressHandler

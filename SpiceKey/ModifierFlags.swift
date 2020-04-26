@@ -9,24 +9,41 @@
 import AppKit.NSEvent
 import Carbon.HIToolbox.Events
 
-public enum ModifierFlags {
-    case empty
-    case ctrl           // ⌃
-    case opt            // ⌥
-    case sft            // ⇧
-    case cmd            // ⌘
-    case ctrlOpt        // ⌃⌥
-    case ctrlSft        // ⌃⇧
-    case ctrlCmd        // ⌃⌘
-    case optSft         // ⌥⇧
-    case optCmd         // ⌥⌘
-    case sftCmd         // ⇧⌘
-    case ctrlOptSft     // ⌃⌥⇧
-    case ctrlOptCmd     // ⌃⌥⌘
-    case ctrlSftCmd     // ⌃⇧⌘
-    case optSftCmd      // ⌥⇧⌘
-    case ctrlOptSftCmd  // ⌃⌥⇧⌘
-
+public struct ModifierFlags: OptionSet {
+    
+    public var rawValue: UInt8
+    
+    public init(rawValue: UInt8) {
+        self.rawValue = rawValue
+    }
+    
+    public static let ctrl = ModifierFlags(rawValue: 1 << 0)   // ⌃
+    public static let opt  = ModifierFlags(rawValue: 1 << 1)   // ⌥
+    public static let sft  = ModifierFlags(rawValue: 1 << 2)   // ⇧
+    public static let cmd  = ModifierFlags(rawValue: 1 << 3)   // ⌘
+    
+    public static let empty         : ModifierFlags = []
+    public static let ctrlOpt       : ModifierFlags = [.ctrl, .opt]             // ⌃⌥
+    public static let ctrlSft       : ModifierFlags = [.ctrl, .sft]             // ⌃⇧
+    public static let ctrlCmd       : ModifierFlags = [.ctrl, .cmd]             // ⌃⌘
+    public static let optSft        : ModifierFlags = [.opt, .sft]              // ⌥⇧
+    public static let optCmd        : ModifierFlags = [.opt, .cmd]              // ⌥⌘
+    public static let sftCmd        : ModifierFlags = [.sft, .cmd]              // ⇧⌘
+    public static let ctrlOptSft    : ModifierFlags = [.ctrl, .opt, .sft]       // ⌃⌥⇧
+    public static let ctrlOptCmd    : ModifierFlags = [.ctrl, .opt, .cmd]       // ⌃⌥⌘
+    public static let ctrlSftCmd    : ModifierFlags = [.ctrl, .sft, .cmd]       // ⌃⇧⌘
+    public static let optSftCmd     : ModifierFlags = [.opt, .sft, .cmd]        // ⌥⇧⌘
+    public static let ctrlOptSftCmd : ModifierFlags = [.ctrl, .opt, .sft, .cmd] // ⌃⌥⇧⌘
+    
+    public var string: String {
+        var s = ""
+        s += self.contains(.ctrl) ? "⌃" : ""
+        s += self.contains(.opt) ? "⌥" : ""
+        s += self.contains(.sft) ? "⇧" : ""
+        s += self.contains(.cmd) ? "⌘" : ""
+        return s
+    }
+    
     public init?(flags: NSEvent.ModifierFlags) {
         switch flags {
         case [.control]: self = .ctrl
@@ -48,99 +65,29 @@ public enum ModifierFlags {
         }
     }
     
-    public init(_ modifierFlag: ModifierFlag) {
-        switch modifierFlag {
-        case .control: self = .ctrl
-        case .option:  self = .opt
-        case .shift:   self = .sft
-        case .command: self = .cmd
-        }
-    }
-    
-    public init?(control: Bool, option: Bool, shift: Bool, command: Bool) {
-        if !(control || option || shift || command) {
-            return nil
-        }
-        var flags = NSEvent.ModifierFlags()
-        if control { flags = flags.union(.control) }
-        if option { flags = flags.union(.option) }
-        if shift { flags = flags.union(.shift) }
-        if command { flags = flags.union(.command) }
-        self.init(flags: flags)
-    }
-    
-    public var string: String {
-        switch self {
-        case .empty:         return ""
-        case .ctrl:          return "⌃"
-        case .opt:           return "⌥"
-        case .sft:           return "⇧"
-        case .cmd:           return "⌘"
-        case .ctrlOpt:       return "⌃⌥"
-        case .ctrlSft:       return "⌃⇧"
-        case .ctrlCmd:       return "⌃⌘"
-        case .optSft:        return "⌥⇧"
-        case .optCmd:        return "⌥⌘"
-        case .sftCmd:        return "⇧⌘"
-        case .ctrlOptSft:    return "⌃⌥⇧"
-        case .ctrlOptCmd:    return "⌃⌥⌘"
-        case .ctrlSftCmd:    return "⌃⇧⌘"
-        case .optSftCmd:     return "⌥⇧⌘"
-        case .ctrlOptSftCmd: return "⌃⌥⇧⌘"
-        }
-    }
-    
-    public var flags: NSEvent.ModifierFlags {
-        switch self {
-        case .empty:         return NSEvent.ModifierFlags()
-        case .ctrl:          return [.control]
-        case .opt:           return [.option]
-        case .sft:           return [.shift]
-        case .cmd:           return [.command]
-        case .ctrlOpt:       return [.control, .option]
-        case .ctrlSft:       return [.control, .shift]
-        case .ctrlCmd:       return [.control, .command]
-        case .optSft:        return [.option,  .shift]
-        case .optCmd:        return [.option,  .command]
-        case .sftCmd:        return [.shift,   .command]
-        case .ctrlOptSft:    return [.control, .option, .shift]
-        case .ctrlOptCmd:    return [.control, .option, .command]
-        case .ctrlSftCmd:    return [.control, .shift,  .command]
-        case .optSftCmd:     return [.option,  .shift,  .command]
-        case .ctrlOptSftCmd: return [.control, .option, .shift, .command]
-        }
-    }
-    
-    public var containsControl: Bool {
-        return self.flags.contains(NSEvent.ModifierFlags.control)
-    }
-    
-    public var containsOption: Bool {
-        return self.flags.contains(NSEvent.ModifierFlags.option)
-    }
-    
-    public var containsShift: Bool {
-        return self.flags.contains(NSEvent.ModifierFlags.shift)
-    }
-    
-    public var containsCommand: Bool {
-        return self.flags.contains(NSEvent.ModifierFlags.command)
+    public init(control: Bool, option: Bool, shift: Bool, command: Bool) {
+        self = .empty
+        if control { self.formUnion(.ctrl) }
+        if option  { self.formUnion(.opt) }
+        if shift   { self.formUnion(.sft) }
+        if command { self.formUnion(.cmd) }
     }
     
     internal var flags32: UInt32 {
         var flags: UInt32 = 0
-        if self.flags.contains(.control) {
+        if self.contains(.ctrl) {
             flags |= UInt32(controlKey)
         }
-        if self.flags.contains(.option) {
+        if self.contains(.opt) {
             flags |= UInt32(optionKey)
         }
-        if self.flags.contains(.shift) {
+        if self.contains(.sft) {
             flags |= UInt32(shiftKey)
         }
-        if self.flags.contains(.command) {
+        if self.contains(.cmd) {
             flags |= UInt32(cmdKey)
         }
         return flags
     }
+    
 }

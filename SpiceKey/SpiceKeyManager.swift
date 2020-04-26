@@ -160,31 +160,31 @@ final class SpiceKeyManager {
         // both side
         let flag = checkFlags(flags)
         if flag.ctr || flag.opt || flag.sft || flag.cmd {
-            var modifierFlag: ModifierFlag!
+            var modifierFlags: ModifierFlags!
             if flag.ctr {
-                modifierFlag = ModifierFlag.control
+                modifierFlags = ModifierFlags.ctrl
                 if keyCode == LEFT_CONTROL { keyFlag.left = !keyFlag.left }
                 if keyCode == RIGHT_CONTROL { keyFlag.right = !keyFlag.right }
             }
             if flag.opt {
-                modifierFlag = ModifierFlag.option
+                modifierFlags = ModifierFlags.opt
                 if keyCode == LEFT_OPTION { keyFlag.left = !keyFlag.left }
                 if keyCode == RIGHT_OPTION { keyFlag.right = !keyFlag.right }
             }
             if flag.sft {
-                modifierFlag = ModifierFlag.shift
+                modifierFlags = ModifierFlags.sft
                 if keyCode == LEFT_SHIFT { keyFlag.left = !keyFlag.left }
                 if keyCode == RIGHT_SHIFT { keyFlag.right = !keyFlag.right }
             }
             if flag.cmd {
-                modifierFlag = ModifierFlag.command
+                modifierFlags = ModifierFlags.cmd
                 if keyCode == LEFT_COMMAND { keyFlag.left = !keyFlag.left }
                 if keyCode == RIGHT_COMMAND { keyFlag.right = !keyFlag.right }
             }
             
             if keyFlag.left && keyFlag.right {
                 let bothSideSpiceKeys = spiceKeys.values.filter { (spiceKey) -> Bool in
-                    return spiceKey.isBothSide && spiceKey.modifierFlags! == modifierFlag.flags
+                    return spiceKey.isBothSide && spiceKey.modifierFlags! == modifierFlags
                 }
                 bothSideSpiceKeys.first?.bothSideModifierKeysPressHandler!()
             }

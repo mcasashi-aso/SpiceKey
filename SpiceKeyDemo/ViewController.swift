@@ -32,7 +32,7 @@ class ViewController: NSViewController {
             self.stateLabel.stringValue = "Long Press"
         })
         longPressSpiceKey?.register()
-        bothSideSpiceKey = SpiceKey(ModifierFlag.control, bothSideModifierKeysPressHandler: {
+        bothSideSpiceKey = SpiceKey(ModifierFlags.ctrl, bothSideModifierKeysPressHandler: {
             self.stateLabel.stringValue = "Both Side"
         })
         bothSideSpiceKey?.register()
@@ -72,12 +72,12 @@ class ViewController: NSViewController {
     @IBAction func bothSidePopupChange(_ sender: NSPopUpButton) {
         if bothSide != sender.indexOfSelectedItem {
             bothSideSpiceKey?.unregister()
-            var modifierFlag: ModifierFlag!
+            var modifierFlag: ModifierFlags!
             switch sender.indexOfSelectedItem {
-            case 0: modifierFlag = ModifierFlag.control
-            case 1: modifierFlag = ModifierFlag.option
-            case 2: modifierFlag = ModifierFlag.shift
-            case 3: modifierFlag = ModifierFlag.command
+            case 0: modifierFlag = ModifierFlags.ctrl
+            case 1: modifierFlag = ModifierFlags.opt
+            case 2: modifierFlag = ModifierFlags.sft
+            case 3: modifierFlag = ModifierFlags.cmd
             default: break
             }
             bothSideSpiceKey = SpiceKey(modifierFlag, bothSideModifierKeysPressHandler: {
