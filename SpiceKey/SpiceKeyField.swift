@@ -67,7 +67,11 @@ open class SpiceKeyField: NSTextField {
     }
     
     override open func performKeyEquivalent(with event: NSEvent) -> Bool {
+<<<<<<< HEAD
         if isTyping, let key = event.characters?.first {
+=======
+        if isTyping, let key = Key(keyCode: event.keyCode) {
+>>>>>>> parent of 514ff5e... add `character` to `Key`
             let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
             let modifierFlags = ModifierFlags(flags: flags)!
             stringValue = modifierFlags.string + key.description
