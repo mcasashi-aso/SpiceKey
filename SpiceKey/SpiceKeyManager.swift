@@ -163,23 +163,23 @@ final class SpiceKeyManager {
             var modifierFlags: ModifierFlags!
             if flag.ctr {
                 modifierFlags = ModifierFlags.ctrl
-                if keyCode == LEFT_CONTROL { keyFlag.left = !keyFlag.left }
-                if keyCode == RIGHT_CONTROL { keyFlag.right = !keyFlag.right }
+                if keyCode == LEFT_CONTROL  { keyFlag.left.toggle() }
+                if keyCode == RIGHT_CONTROL { keyFlag.right.toggle() }
             }
             if flag.opt {
                 modifierFlags = ModifierFlags.opt
-                if keyCode == LEFT_OPTION { keyFlag.left = !keyFlag.left }
-                if keyCode == RIGHT_OPTION { keyFlag.right = !keyFlag.right }
+                if keyCode == LEFT_OPTION  { keyFlag.left.toggle() }
+                if keyCode == RIGHT_OPTION { keyFlag.right.toggle() }
             }
             if flag.sft {
                 modifierFlags = ModifierFlags.sft
-                if keyCode == LEFT_SHIFT { keyFlag.left = !keyFlag.left }
-                if keyCode == RIGHT_SHIFT { keyFlag.right = !keyFlag.right }
+                if keyCode == LEFT_SHIFT  { keyFlag.left.toggle() }
+                if keyCode == RIGHT_SHIFT { keyFlag.right.toggle() }
             }
             if flag.cmd {
                 modifierFlags = ModifierFlags.cmd
-                if keyCode == LEFT_COMMAND { keyFlag.left = !keyFlag.left }
-                if keyCode == RIGHT_COMMAND { keyFlag.right = !keyFlag.right }
+                if keyCode == LEFT_COMMAND  { keyFlag.left.toggle() }
+                if keyCode == RIGHT_COMMAND { keyFlag.right.toggle() }
             }
             
             if keyFlag.left && keyFlag.right {
