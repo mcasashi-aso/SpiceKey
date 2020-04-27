@@ -7,7 +7,11 @@
 //
 
 public struct KeyCombination {
+<<<<<<< HEAD
     public var key: Character
+=======
+    public var key: Key
+>>>>>>> parent of c980907... make `KeyCombination` comformed with `Equatable`
     public var modifierFlags: ModifierFlags
     public var string: String {
         return modifierFlags.string + key.description
